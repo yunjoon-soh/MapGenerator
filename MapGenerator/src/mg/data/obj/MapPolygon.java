@@ -16,7 +16,7 @@ import mg.data.info.RenderInfo;
  */
 public class MapPolygon {
 
-    private ArrayList<MapPoint> vertices;
+    private final ArrayList<MapPoint> vertices;
 
     public MapPolygon() {
         this.vertices = new ArrayList<>();
@@ -54,7 +54,7 @@ public class MapPolygon {
         return ret;
     }
 
-    public void reset() {
-        this.vertices = new ArrayList<>();
+    public void clear() {
+        this.vertices.clear();
     }
 }

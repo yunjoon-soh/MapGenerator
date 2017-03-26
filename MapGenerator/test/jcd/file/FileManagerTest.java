@@ -55,7 +55,7 @@ public class FileManagerTest {
         ///////////////////////////////////////////////////////////////////////
         // fifth dObjList: default package, default class
         ArrayList<MapObj> dObjList5 = new ArrayList<>();
-        DataManager.setdObjList(dObjList5);
+//        DataManager.setdObjList(dObjList5);
 
         listOfdObjList.add(dObjList5);
     }

@@ -31,7 +31,6 @@ import mg.data.obj.DataHandler;
 import mg.data.obj.MapObj;
 import mg.data.obj.MapPolygon;
 import mg.file.FileManager;
-import static mg.gui.WorkspaceHandler.poly;
 import properties_manager.PropertiesManager;
 import saf.AppTemplate;
 import saf.components.AppWorkspaceComponent;
@@ -440,7 +439,7 @@ public class Workspace extends AppWorkspaceComponent {
             }
         }
 
-        for (MapPolygon mp : poly) {
+        for (MapPolygon mp : DataManager.getPolygons()) {
             for (Line l : mp.getLines()) {
                 try {
                     Node child = l;

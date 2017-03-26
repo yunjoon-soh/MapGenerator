@@ -7,8 +7,6 @@ package mg.gui;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -20,14 +18,12 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
 import javafx.stage.FileChooser;
 import javax.imageio.ImageIO;
 import mg.data.DataManager;
 import mg.data.obj.MapObj;
 import mg.data.obj.MapPoint;
-import mg.data.obj.MapPolygon;
 import mg.file.FileManager;
 import properties_manager.PropertiesManager;
 import static saf.settings.AppPropertyType.LOAD_ERROR_MESSAGE;
@@ -62,9 +58,6 @@ public class WorkspaceHandler {
     private static double oriLength, oriHeight;
 
     /*Handle point creation*/
-    static List<MapPolygon> poly = new ArrayList<>();
-    static MapPolygon buf = new MapPolygon();
-
     public static void handleMouseClick(MouseEvent m) {
         if (m.getTarget().equals(Workspace.viewAreaPane) || m.getTarget() instanceof Polygon) {
             double X = m.getX();
@@ -77,7 +70,7 @@ public class WorkspaceHandler {
             
             MapPoint p = new MapPoint(X, Y);
             DataManager.getDObjList().add(p);
-            buf.addPoint(p);
+            DataManager.addPoint(p);
         }
 
         DataManager.getApp().getWorkspaceComponent().reloadWorkspace();
@@ -89,9 +82,7 @@ public class WorkspaceHandler {
     }
 
     public static void handleGeneratePolygon() {
-        poly.add(buf);
-        System.out.println(poly.size());
-        buf = new MapPolygon();
+        DataManager.pushBuffer();
     }
 
     public static void handleMouseDraggedDesignObj(MouseEvent t, MapObj dObj) {
@@ -117,13 +108,6 @@ public class WorkspaceHandler {
             return;
         }
 
-//        if (dObj instanceof MapPoint) {
-//            System.out.println("handleMousePressed() " + dObj);
-//            boolean success = DataManager.getDObjList().remove(dObj);
-//            System.out.println(success ? "Success" : "Failed");
-//            
-//            poly.rmPoint((MapPoint) dObj);
-//        }
         orgSceneX = t.getSceneX();
         orgSceneY = t.getSceneY();
         orgTranslateX = ((Node) (t.getSource())).getTranslateX();

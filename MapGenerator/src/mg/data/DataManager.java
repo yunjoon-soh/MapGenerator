@@ -1,6 +1,7 @@
 package mg.data;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
@@ -11,6 +12,8 @@ import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import mg.data.obj.MapObj;
+import mg.data.obj.MapPoint;
+import mg.data.obj.MapPolygon;
 import saf.AppTemplate;
 import saf.components.AppDataComponent;
 
@@ -26,9 +29,10 @@ public class DataManager implements AppDataComponent {
     // THIS IS A SHARED REFERENCE TO THE APPLICATION
     protected static AppTemplate app;
 
-    protected static ArrayList<MapObj> dObjList;
+    protected static ArrayList<MapObj> dObjList  = new ArrayList<>();
 
-    private static Stack<DataModifyLog> undoLog, redoLog;
+    private final static Stack<DataModifyLog> undoLog  = new Stack<>();
+    private final static Stack<DataModifyLog> redoLog  = new Stack<>();
 
     static ObjectProperty<MapObj> selectedDObj;
 
@@ -36,7 +40,21 @@ public class DataManager implements AppDataComponent {
 
     public final static BooleanProperty IS_DBOX_SELECTED = new SimpleBooleanProperty();
 
-    ;
+    private final static List<MapPolygon> polygons = new ArrayList<>();
+    private static MapPolygon buf_polygon = new MapPolygon();
+    
+    public static void addPoint(MapPoint p){
+        buf_polygon.addPoint(p);
+    }
+    
+    public static void pushBuffer(){
+        polygons.add(buf_polygon);
+        buf_polygon = new MapPolygon();
+    }
+    
+    public static List<MapPolygon> getPolygons(){
+        return polygons;
+    }
 
     public static boolean isUndoLogEmpty() {
         return undoLog.isEmpty();
@@ -81,12 +99,7 @@ public class DataManager implements AppDataComponent {
     public DataManager(AppTemplate initApp) throws Exception {
         // KEEP THE APP FOR LATER
         app = initApp;
-
-        dObjList = new ArrayList<>();
-
-        undoLog = new Stack<>();
-        redoLog = new Stack<>();
-
+        
         selectedDObj = new SimpleObjectProperty<>();
 
         selectedCanvas.addListener((obs, oldNode, newNode) -> {
@@ -103,13 +116,16 @@ public class DataManager implements AppDataComponent {
 
     @Override
     public void reset() {
-        dObjList = new ArrayList<>();
+        dObjList.clear();
 
-        undoLog = new Stack<>();
-        redoLog = new Stack<>();
+        undoLog.clear();
+        redoLog.clear();
 
         selectedCanvas.set(null);
         selectedDObj.set(null);
+        
+        polygons.clear();
+        buf_polygon.clear();
     }
 
     public static AppTemplate getApp() {
