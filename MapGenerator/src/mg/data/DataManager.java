@@ -47,6 +47,17 @@ public class DataManager implements AppDataComponent {
         buf_polygon.addPoint(p);
     }
     
+    public static void rmPoint(MapPoint p){
+        buf_polygon.rmPoint(p);
+        boolean removed = false;
+        for(MapPolygon mp : polygons){
+            removed |= mp.rmPoint(p);
+        }
+        
+        if(removed)
+            DataManager.getApp().getWorkspaceComponent().reloadWorkspace();
+    }
+    
     public static void pushBuffer(){
         polygons.add(buf_polygon);
         buf_polygon = new MapPolygon();

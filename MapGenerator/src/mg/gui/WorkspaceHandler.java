@@ -107,6 +107,11 @@ public class WorkspaceHandler {
         if (t.getClickCount() > 1) {
             return;
         }
+        
+        if(dObj instanceof MapPoint && t.isSecondaryButtonDown()){
+            DataManager.getDObjList().remove((MapPoint) dObj);
+            DataManager.rmPoint((MapPoint) dObj);
+        }
 
         orgSceneX = t.getSceneX();
         orgSceneY = t.getSceneY();

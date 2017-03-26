@@ -31,8 +31,9 @@ Gathered JsonArray is dumped as file.
 3. Inside the reloadCanvas(), MapPolygon is drew with array of lines
 
 ## How points are deleted
-1. When point is pressed, point removes itself from the Datamanager dObj list
--> This is subject to change, temporarily disabled
+1. When point is pressed with secondary mouse, point removes itself from the Datamanager dObj list
+2. Then for every polygon, remove from the polygon.
+3. If remove from the polygon happened, reloadCanvas()
 
 ## When points are moved
 1. When point is moved, point updates its location using the dObj's RenderInfo's posX and posY. They both are SimpleDoubleProperty

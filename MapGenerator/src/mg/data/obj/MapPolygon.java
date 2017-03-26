@@ -26,8 +26,8 @@ public class MapPolygon {
         vertices.add(p);
     }
 
-    public void rmPoint(MapPoint p) {
-        vertices.remove(p);
+    public boolean rmPoint(MapPoint p) {
+        return vertices.remove(p);
     }
 
     public List<MapPoint> getPoints() {
