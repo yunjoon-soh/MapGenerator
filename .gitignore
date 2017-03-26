@@ -1,6 +1,4 @@
-private
-/JClassDesigner/build/
-/JClassDesigner/dist/
-/SimpleAppFramework/dist/
-/SimpleAppFramework/build/
-/JClassDesigner/Work
+private/
+build/
+dist/
+work/

@@ -130,19 +130,19 @@ public class FileManager implements AppFileComponent {
                     .add(JSON_INFO_RI, dObj.getRenderInfo().toJsonObject())
                     .build();
 
-        } else if (dObj instanceof MapPolygon) {
-            MapPolygon pObj = (MapPolygon) dObj;
-
-            JsonArrayBuilder otherPointArray = Json.createArrayBuilder();
-            for (MapPoint p : pObj.getPoints()) {
-                otherPointArray.add(p.toJsonObject());
-            }
-            JsonArray jA = otherPointArray.build();
-
-            jso = Json.createObjectBuilder()
-                    .add(JSON_DESIGN_OBJECT_TYPE, JSON_POLYGON)
-                    .add(JSON_POLYGON_POINTS, jA)
-                    .build();
+//        } else if (dObj instanceof MapPolygon) {
+//            MapPolygon pObj = (MapPolygon) dObj;
+//
+//            JsonArrayBuilder otherPointArray = Json.createArrayBuilder();
+//            for (MapPoint p : pObj.getPoints()) {
+//                otherPointArray.add(p.toJsonObject());
+//            }
+//            JsonArray jA = otherPointArray.build();
+//
+//            jso = Json.createObjectBuilder()
+//                    .add(JSON_DESIGN_OBJECT_TYPE, JSON_POLYGON)
+//                    .add(JSON_POLYGON_POINTS, jA)
+//                    .build();
         } else {
             throw new IllegalArgumentException();
         }
@@ -238,7 +238,7 @@ public class FileManager implements AppFileComponent {
                 break;
             case JSON_POLYGON:
                 System.out.println("loadDesignObj: JSON_POLYGON");
-                ret = new MapPolygon();
+//                ret = new MapPolygon();
 
                 JsonArray jA2 = data.getJsonArray(JSON_POLYGON_POINTS);
 
@@ -246,7 +246,7 @@ public class FileManager implements AppFileComponent {
                     JsonObject pointsInPoly = jA2.getJsonObject(i);
                     MapPoint p = loadPoint(pointsInPoly);
 
-                    ((MapPolygon) ret).addPoint(p);
+//                    ((MapPolygon) ret).addPoint(p);
                 }
 
                 break;

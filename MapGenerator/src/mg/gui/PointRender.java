@@ -25,10 +25,12 @@ public class PointRender extends Circle {
 
         setOnMousePressed(e -> {
             WorkspaceHandler.handleMousePressed(e, p);
+            e.consume();
         });
 
         setOnMouseDragged(e -> {
             WorkspaceHandler.handleMouseDraggedDesignObj(e, p);
+            e.consume();
         });
 
         setOnMouseEntered(e -> {
@@ -38,5 +40,6 @@ public class PointRender extends Circle {
         setOnMouseExited(e -> {
             WorkspaceHandler.handleMouseOver(e, p, false);
         });
+        
     }
 }

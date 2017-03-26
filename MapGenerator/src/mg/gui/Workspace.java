@@ -29,7 +29,9 @@ import static mg.PropertyType.UPDATE_ERROR_TITLE;
 import mg.data.DataManager;
 import mg.data.obj.DataHandler;
 import mg.data.obj.MapObj;
+import mg.data.obj.MapPolygon;
 import mg.file.FileManager;
+import static mg.gui.WorkspaceHandler.poly;
 import properties_manager.PropertiesManager;
 import saf.AppTemplate;
 import saf.components.AppWorkspaceComponent;
@@ -167,7 +169,7 @@ public class Workspace extends AppWorkspaceComponent {
         undoButton = gui.initChildButton(editToolbarPane, PropertyType.UNDO_ICON.toString(), PropertyType.UNDO_TOOLTIP.toString(), true);
         undoButton.setOnAction(e -> {
             DataHandler.handleUndo();
-            
+
         });
 
         redoButton = gui.initChildButton(editToolbarPane, PropertyType.REDO_ICON.toString(), PropertyType.REDO_TOOLTIP.toString(), true);
@@ -418,6 +420,8 @@ public class Workspace extends AppWorkspaceComponent {
     public void reloadCanvas() {
         viewAreaPane.getChildren().clear();
 
+        System.out.println("reloadCanvas: size:" + DataManager.getDObjList().size());
+
         //load canvas
         for (MapObj dObj : DataManager.getDObjList()) {
             try {
@@ -426,13 +430,32 @@ public class Workspace extends AppWorkspaceComponent {
                 boolean add = viewAreaPane.getChildren().add(child);
 
                 if (!add) {
-                    System.out.println("Failed to add the object: " + dObj);
-                } else{
-                    System.out.println("Successfully added the object: " + dObj);
+                    System.out.println("reloadCanvas: Failed to add the object: " + dObj);
+                } else {
+                    System.out.println("reloadCanvas: Successfully added the object: " + dObj);
                 }
 
             } catch (IllegalArgumentException iae) {
                 System.out.println(iae.getMessage());
+            }
+        }
+
+        for (MapPolygon mp : poly) {
+            for (Line l : mp.getLines()) {
+                try {
+                    Node child = l;
+
+                    boolean add = viewAreaPane.getChildren().add(child);
+
+                    if (!add) {
+                        System.out.println("reloadCanvas: Failed to add the object: " + l);
+                    } else {
+                        System.out.println("reloadCanvas: Successfully added the object: " + l);
+                    }
+
+                } catch (IllegalArgumentException iae) {
+                    System.out.println(iae.getMessage());
+                }
             }
         }
 
