@@ -22,9 +22,9 @@ import javafx.scene.shape.Polygon;
 import javafx.stage.FileChooser;
 import javax.imageio.ImageIO;
 import mg.data.DataManager;
-import mg.data.obj.DesignObj;
-import mg.data.obj.Point;
-import mg.data.obj.PolygonObj;
+import mg.data.obj.MapObj;
+import mg.data.obj.MapPoint;
+import mg.data.obj.MapPolygon;
 import mg.file.FileManager;
 import properties_manager.PropertiesManager;
 import static saf.settings.AppPropertyType.LOAD_ERROR_MESSAGE;
@@ -59,7 +59,7 @@ public class WorkspaceHandler {
     private static double oriLength, oriHeight;
 
     /*Handle point creation*/
-    static PolygonObj poly = new PolygonObj();
+    static MapPolygon poly = new MapPolygon();
     
     public static void handleMouseClick(MouseEvent m) {
         double X = m.getX();
@@ -72,7 +72,7 @@ public class WorkspaceHandler {
         }
         
         if (m.getTarget().equals(Workspace.viewAreaPane) || m.getTarget() instanceof Polygon) {
-            Point p = new Point(X, Y);
+            MapPoint p = new MapPoint(X, Y);
             System.out.println("handleMouseClick()" + p + ", event: " + m);
             DataManager.getDObjList().add(p);
             poly.addPoint(p);
@@ -91,12 +91,12 @@ public class WorkspaceHandler {
         SCALE_Y.set(SCALE_Y.get() / 2);
     }
     
-    public static void handleSelection(MouseEvent e, DesignObj dObj) {
+    public static void handleSelection(MouseEvent e, MapObj dObj) {
         DataManager.setSelected(dObj);
         DataManager.getSelectedCanvas().set((Node) e.getSource());
     }
     
-    public static void handleMouseDraggedDesignObj(MouseEvent t, DesignObj dObj) {
+    public static void handleMouseDraggedDesignObj(MouseEvent t, MapObj dObj) {
         DataManager.getApp().getGUI().markAsEdited();
         
         double offsetX = t.getSceneX() - orgSceneX;
@@ -116,17 +116,17 @@ public class WorkspaceHandler {
         DataManager.getApp().getWorkspaceComponent().reloadWorkspace();
     }
     
-    public static void handleMousePressed(MouseEvent t, DesignObj dObj) {
+    public static void handleMousePressed(MouseEvent t, MapObj dObj) {
         if (t.getClickCount() > 1) {
             return;
         }
         
-        if (dObj instanceof Point) {
+        if (dObj instanceof MapPoint) {
             System.out.println("handleMousePressed() " + dObj);
             boolean success = DataManager.getDObjList().remove(dObj);
             System.out.println(success ? "Success" : "Failed");
             
-            poly.rmPoint((Point) dObj);
+            poly.rmPoint((MapPoint) dObj);
         }
         
         orgSceneX = t.getSceneX();
@@ -135,7 +135,7 @@ public class WorkspaceHandler {
         orgTranslateY = ((Node) (t.getSource())).getTranslateY();
     }
     
-    public static void handleMouseOver(MouseEvent t, DesignObj dObj, boolean delete) {
+    public static void handleMouseOver(MouseEvent t, MapObj dObj, boolean delete) {
         if (delete) {
             dObj.getRenderInfo().colorProperty().set(Color.RED);
         } else {
@@ -230,8 +230,8 @@ public class WorkspaceHandler {
             return;
         }
         
-        PolygonObj created = new PolygonObj();
-        for(Point p : poly.getPoints()){
+        MapPolygon created = new MapPolygon();
+        for(MapPoint p : poly.getPoints()){
             created.addPoint(p);
         }
         poly.reset();

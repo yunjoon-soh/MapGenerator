@@ -23,16 +23,12 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
 import javafx.scene.transform.Scale;
-import mg.EnumContainer.LOG_TYPE;
 import mg.PropertyType;
 import static mg.PropertyType.UPDATE_ERROR_MESSAGE;
 import static mg.PropertyType.UPDATE_ERROR_TITLE;
 import mg.data.DataManager;
-import mg.data.DataModifyLog;
 import mg.data.obj.DataHandler;
-import mg.data.obj.DesignObj;
-import mg.data.obj.Point;
-import mg.data.obj.PolygonObj;
+import mg.data.obj.MapObj;
 import mg.file.FileManager;
 import properties_manager.PropertiesManager;
 import saf.AppTemplate;
@@ -308,12 +304,12 @@ public class Workspace extends AppWorkspaceComponent {
 //                case "M":
 //                case "m":
 //                    System.out.println("M, m pressed");
-//                    if (!(DataManager.getSelectedDObj().get() instanceof Point)) {
+//                    if (!(DataManager.getSelectedDObj().get() instanceof MapPoint)) {
 //                        break;
 //                    }
-//                    Point selectedPoint = (Point) DataManager.getSelectedDObj().get();
+//                    MapPoint selectedPoint = (MapPoint) DataManager.getSelectedDObj().get();
 //                    if (selectedPoint == null) {
-//                        System.out.println("Selected Point is Null");
+//                        System.out.println("Selected MapPoint is Null");
 //                        return;
 //                    }
 //
@@ -423,7 +419,7 @@ public class Workspace extends AppWorkspaceComponent {
         viewAreaPane.getChildren().clear();
 
         //load canvas
-        for (DesignObj dObj : DataManager.getDObjList()) {
+        for (MapObj dObj : DataManager.getDObjList()) {
             try {
                 Node child = dObj.getRenderObject();
 

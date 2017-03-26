@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,13 +18,11 @@ import javax.json.JsonReader;
 import javax.json.JsonWriter;
 import javax.json.JsonWriterFactory;
 import javax.json.stream.JsonGenerator;
-import mg.EnumContainer.LINE_TYPE;
 import mg.data.DataManager;
 import mg.data.info.RenderInfo;
-import mg.data.obj.DesignObj;
-import mg.data.obj.LineSeg;
-import mg.data.obj.Point;
-import mg.data.obj.PolygonObj;
+import mg.data.obj.MapObj;
+import mg.data.obj.MapPoint;
+import mg.data.obj.MapPolygon;
 import saf.components.AppDataComponent;
 import saf.components.AppFileComponent;
 
@@ -107,36 +104,37 @@ public class FileManager implements AppFileComponent {
     private static final String JSON_POLYGON = "polygon";
     private static final String JSON_POLYGON_POINTS = "polygon_points";
 
-    public static JsonObject makeDesignObjJsonObject(DesignObj dObj) {
+    public static JsonObject makeDesignObjJsonObject(MapObj dObj) {
         JsonObject jso = null;
-        if (dObj instanceof LineSeg) {
-//            JsonArrayBuilder otherPointArray = Json.createArrayBuilder();
-//            for (Point p : ((LineSeg) dObj).getOtherPoints()) {
-//                otherPointArray.add(p.toJsonObject());
-//            }
-//            JsonArray jA = otherPointArray.build();
-
-            jso = Json.createObjectBuilder()
-                    .add(JSON_DESIGN_OBJECT_TYPE, JSON_LINE_SEG)
-                    .add(JSON_INFO_RI, dObj.getRenderInfo().toJsonObject())
-                    .add(JSON_INFO_LINE_TYPE, ((LineSeg) dObj).getLineType().toString())
-                    .add(JSON_INFO_LINE_START_RI, ((LineSeg) dObj).getStart().getRenderInfo().toJsonObject())
-                    .add(JSON_INFO_LINE_END_RI, ((LineSeg) dObj).getEnd().getRenderInfo().toJsonObject())
-                    //                    .add(JSON_INFO_LINE_OTHERPOINTS, jA)
-                    .build();
-
-        } else if (dObj instanceof Point) {
+//        if (dObj instanceof LineSeg) {
+////            JsonArrayBuilder otherPointArray = Json.createArrayBuilder();
+////            for (MapPoint p : ((LineSeg) dObj).getOtherPoints()) {
+////                otherPointArray.add(p.toJsonObject());
+////            }
+////            JsonArray jA = otherPointArray.build();
+//
+//            jso = Json.createObjectBuilder()
+//                    .add(JSON_DESIGN_OBJECT_TYPE, JSON_LINE_SEG)
+//                    .add(JSON_INFO_RI, dObj.getRenderInfo().toJsonObject())
+//                    .add(JSON_INFO_LINE_TYPE, ((LineSeg) dObj).getLineType().toString())
+//                    .add(JSON_INFO_LINE_START_RI, ((LineSeg) dObj).getStart().getRenderInfo().toJsonObject())
+//                    .add(JSON_INFO_LINE_END_RI, ((LineSeg) dObj).getEnd().getRenderInfo().toJsonObject())
+//                    //                    .add(JSON_INFO_LINE_OTHERPOINTS, jA)
+//                    .build();
+//
+//        } else 
+        if (dObj instanceof MapPoint) {
 
             jso = Json.createObjectBuilder()
                     .add(JSON_DESIGN_OBJECT_TYPE, JSON_POINT)
                     .add(JSON_INFO_RI, dObj.getRenderInfo().toJsonObject())
                     .build();
 
-        } else if (dObj instanceof PolygonObj) {
-            PolygonObj pObj = (PolygonObj) dObj;
+        } else if (dObj instanceof MapPolygon) {
+            MapPolygon pObj = (MapPolygon) dObj;
 
             JsonArrayBuilder otherPointArray = Json.createArrayBuilder();
-            for (Point p : pObj.getPoints()) {
+            for (MapPoint p : pObj.getPoints()) {
                 otherPointArray.add(p.toJsonObject());
             }
             JsonArray jA = otherPointArray.build();
@@ -206,29 +204,29 @@ public class FileManager implements AppFileComponent {
 
     // HELPER METHOD FOR LOADING DATA FROM A JSON FORMAT
     private void loadDObjList(JsonArray jA) {
-        ArrayList<DesignObj> dObjList = new ArrayList<>();
+        ArrayList<MapObj> dObjList = new ArrayList<>();
         DataManager.setdObjList(dObjList);
 
         // FIRST UPDATE THE ROOT
         for (int i = 0; i < jA.size(); i++) {
             JsonObject jObj = jA.getJsonObject(i);
-            DesignObj oneData = loadDesignObj(jObj);
-            if(oneData != null){
+            MapObj oneData = loadDesignObj(jObj);
+            if (oneData != null) {
                 System.out.println("oneData is not null");
             } else {
                 System.out.println("oneData is null");
             }
-            
+
             assert (oneData != null);
             dObjList.add(oneData);
             System.out.println("add to dObjList done");
         }
-        
+
         System.out.println("Update DesignObj done");
     }
 
-    private DesignObj loadDesignObj(JsonObject data) {
-        DesignObj ret = null;
+    private MapObj loadDesignObj(JsonObject data) {
+        MapObj ret = null;
 
 //        RenderInfo ri = loadRenderInfo(data.getJsonObject(JSON_INFO_RI));
         String identifier = data.getString(JSON_DESIGN_OBJECT_TYPE);
@@ -236,21 +234,21 @@ public class FileManager implements AppFileComponent {
             case JSON_POINT:
                 System.out.println("loadDesignObj : JSON_POINT");
                 ret = loadPoint(data);
-                
+
                 break;
             case JSON_POLYGON:
                 System.out.println("loadDesignObj: JSON_POLYGON");
-                ret = new PolygonObj();
+                ret = new MapPolygon();
 
                 JsonArray jA2 = data.getJsonArray(JSON_POLYGON_POINTS);
 
                 for (int i = 0; i < jA2.size(); i++) {
                     JsonObject pointsInPoly = jA2.getJsonObject(i);
-                    Point p = loadPoint(pointsInPoly);
+                    MapPoint p = loadPoint(pointsInPoly);
 
-                    ((PolygonObj) ret).addPoint(p);
+                    ((MapPolygon) ret).addPoint(p);
                 }
-                
+
                 break;
             default:
                 System.out.println("Cannnot identify the object!!");
@@ -269,10 +267,10 @@ public class FileManager implements AppFileComponent {
         return new RenderInfo(x, y, l, h);
     }
 
-    private Point loadPoint(JsonObject data) {
+    private MapPoint loadPoint(JsonObject data) {
         RenderInfo ri = loadRenderInfo(data.getJsonObject(JSON_INFO_RI));
 
-        return new Point(ri.getPosX(), ri.getPosY());
+        return new MapPoint(ri.getPosX(), ri.getPosY());
     }
 
     /**
@@ -288,7 +286,7 @@ public class FileManager implements AppFileComponent {
      */
     @Override
     public void exportData(AppDataComponent data, String filePath) throws IOException {
-        ArrayList<DesignObj> dObjList = DataManager.getDObjList();
+        ArrayList<MapObj> dObjList = DataManager.getDObjList();
 
     }
 

@@ -103,6 +103,18 @@ public class RenderInfo implements InfoObj {
         this.height.set(height);
     }
 
+    public ObjectProperty colorProperty() {
+        return color;
+    }
+
+    public Paint getColor() {
+        return color.get();
+    }
+
+    public void setColor(ObjectProperty<Paint> color) {
+        this.color = color;
+    }
+
     @Override
     public String toString() {
         String ret = "";
@@ -161,21 +173,5 @@ public class RenderInfo implements InfoObj {
         }
 
         return true;
-    }
-
-    public ObjectProperty colorProperty() {
-        return color;
-    }
-    
-    public Paint getColor(){
-        return color.get();
-    }
-    
-
-    /**
-     * @param color the color to set
-     */
-    public void setColor(ObjectProperty<Paint> color) {
-        this.color = color;
     }
 }

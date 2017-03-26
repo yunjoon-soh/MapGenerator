@@ -17,25 +17,25 @@ import mg.gui.PolygonRenderer;
  *
  * @author Mukum
  */
-public class PolygonObj extends DesignObj {
+public class MapPolygon extends MapObj {
 
     private static final RenderInfo DEF_ri = new RenderInfo(0, 0, 0, 0);
-    private List<Point> points;
+    private List<MapPoint> points;
 
-    public PolygonObj() {
+    public MapPolygon() {
         this.points = new ArrayList<>();
         ri = DEF_ri;
     }
 
-    public void addPoint(Point p) {
+    public void addPoint(MapPoint p) {
         points.add(p);
     }
 
-    public void rmPoint(Point p) {
+    public void rmPoint(MapPoint p) {
         points.remove(p);
     }
 
-    public List<Point> getPoints() {
+    public List<MapPoint> getPoints() {
         return points;
     }
 
@@ -48,7 +48,7 @@ public class PolygonObj extends DesignObj {
     public Node getRenderObject() {
         List<Double> vertices = new ArrayList<>();
 
-        for (Point p : points) {
+        for (MapPoint p : points) {
             vertices.add(p.getRenderInfo().getPosX());
             vertices.add(p.getRenderInfo().getPosY());
         }

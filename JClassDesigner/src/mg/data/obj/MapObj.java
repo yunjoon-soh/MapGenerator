@@ -13,13 +13,13 @@ import javax.json.JsonObject;
  *
  * @author YunJoonSoh
  */
-public abstract class DesignObj {
+public abstract class MapObj {
     private static int idNum = 0;
     RenderInfo ri;
     int id;
     Node shape;
     
-    public DesignObj(){
+    public MapObj(){
         id = ++idNum;
     }
     

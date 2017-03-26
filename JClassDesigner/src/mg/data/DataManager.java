@@ -10,7 +10,7 @@ import javafx.scene.Node;
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
-import mg.data.obj.DesignObj;
+import mg.data.obj.MapObj;
 import saf.AppTemplate;
 import saf.components.AppDataComponent;
 
@@ -22,16 +22,15 @@ import saf.components.AppDataComponent;
  * @version 1.0
  */
 public class DataManager implements AppDataComponent {
-    //constants
 
     // THIS IS A SHARED REFERENCE TO THE APPLICATION
     protected static AppTemplate app;
 
-    protected static ArrayList<DesignObj> dObjList;
+    protected static ArrayList<MapObj> dObjList;
 
     private static Stack<DataModifyLog> undoLog, redoLog;
 
-    static ObjectProperty<DesignObj> selectedDObj;
+    static ObjectProperty<MapObj> selectedDObj;
 
     static ObjectProperty<Node> selectedCanvas = new SimpleObjectProperty<>();
 
@@ -117,11 +116,11 @@ public class DataManager implements AppDataComponent {
         return app;
     }
 
-    public static ArrayList<DesignObj> getDObjList() {
+    public static ArrayList<MapObj> getDObjList() {
         return dObjList;
     }
 
-    public static ObjectProperty<DesignObj> getSelectedDObj() {
+    public static ObjectProperty<MapObj> getSelectedDObj() {
         return selectedDObj;
     }
 
@@ -129,8 +128,8 @@ public class DataManager implements AppDataComponent {
         return selectedCanvas;
     }
 
-    public static void setSelected(DesignObj dObj) {
-        if (dObj instanceof DesignObj) {
+    public static void setSelected(MapObj dObj) {
+        if (dObj instanceof MapObj) {
             selectedDObj.set(dObj);
         } else if (dObj == null) {
             selectedDObj.set(null);
@@ -141,14 +140,14 @@ public class DataManager implements AppDataComponent {
     public static JsonArray getDObjListInJson() {
         JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
 
-        for (DesignObj dObj : dObjList) {
+        for (MapObj dObj : dObjList) {
             arrayBuilder.add(dObj.toJsonObject());
         }
 
         return arrayBuilder.build();
     }
 
-    public static void setdObjList(ArrayList<DesignObj> dObjList) {
+    public static void setdObjList(ArrayList<MapObj> dObjList) {
         DataManager.dObjList = dObjList;
     }
 

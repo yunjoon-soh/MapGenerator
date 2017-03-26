@@ -7,8 +7,6 @@ package mg.test_bed;
 
 import mg.JClassDesigner;
 import mg.data.DataManager;
-
-import mg.data.obj.DesignObj;
 import mg.file.FileManager;
 import saf.components.AppComponentsBuilder;
 import saf.components.AppDataComponent;
@@ -36,7 +34,6 @@ public class TestLoad {
         FileManager fm = (FileManager) fileComponent;
 
         fm.loadData(dm, PATH_WORK + "\\DesignSaveTest.json");
-
 
         System.out.println("TestLoad Driver Done");
     }

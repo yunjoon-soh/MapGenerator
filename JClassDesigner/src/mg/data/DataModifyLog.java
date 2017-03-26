@@ -7,7 +7,7 @@ package mg.data;
 
 import mg.EnumContainer.DESIGN_BOX_ATTRIBUTE;
 import mg.EnumContainer.LOG_TYPE;
-import mg.data.obj.DesignObj;
+import mg.data.obj.MapObj;
 import static mg.EnumContainer.LOG_TYPE.DBOX_ATTR_CHANGE;
 
 /**
@@ -16,17 +16,17 @@ import static mg.EnumContainer.LOG_TYPE.DBOX_ATTR_CHANGE;
  */
 public class DataModifyLog {
 
-    DesignObj what;
+    MapObj what;
     Object before, after;
     DESIGN_BOX_ATTRIBUTE attr;
     LOG_TYPE logType;
 
-    public DataModifyLog(DesignObj what, LOG_TYPE logType) {
+    public DataModifyLog(MapObj what, LOG_TYPE logType) {
         this.what = what;
         this.logType = logType;
     }
 
-    public DataModifyLog(DesignObj what, DESIGN_BOX_ATTRIBUTE attr, Object before, Object after) {
+    public DataModifyLog(MapObj what, DESIGN_BOX_ATTRIBUTE attr, Object before, Object after) {
         this.what = what;
         this.before = before;
         this.after = after;
@@ -38,7 +38,7 @@ public class DataModifyLog {
         return logType;
     }
 
-    public DesignObj getWhat() {
+    public MapObj getWhat() {
         return what;
     }
 

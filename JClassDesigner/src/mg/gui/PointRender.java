@@ -7,7 +7,7 @@ package mg.gui;
 
 import javafx.beans.binding.Bindings;
 import javafx.scene.shape.Circle;
-import mg.data.obj.Point;
+import mg.data.obj.MapPoint;
 
 /**
  *
@@ -15,8 +15,8 @@ import mg.data.obj.Point;
  */
 public class PointRender extends Circle {
 
-    public PointRender(Point p) {
-        setRadius(Point.DEFAULT_POINT_SIZE);
+    public PointRender(MapPoint p) {
+        setRadius(MapPoint.DEFAULT_POINT_SIZE);
 
         translateXProperty().bindBidirectional(p.getRenderInfo().posXProperty());
         translateYProperty().bindBidirectional(p.getRenderInfo().posYProperty());
@@ -38,10 +38,5 @@ public class PointRender extends Circle {
         setOnMouseExited(e -> {
             WorkspaceHandler.handleMouseOver(e, p, false);
         });
-
-//        setOnMouseClicked(e -> {
-//            WorkspaceHandler.handleSelection(e, p);
-//            e.consume();
-//        });
     }
 }

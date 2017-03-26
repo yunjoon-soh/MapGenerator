@@ -8,7 +8,7 @@ package jcd.file;
 import java.util.ArrayList;
 import mg.JClassDesigner;
 import mg.data.DataManager;
-import mg.data.obj.DesignObj;
+import mg.data.obj.MapObj;
 import mg.file.FileManager;
 import org.junit.AfterClass;
 import static org.junit.Assert.*;
@@ -33,7 +33,7 @@ public class FileManagerTest {
     final static boolean IS_STATIC = true;
     final static boolean IS_FINAL = true;
 
-    static ArrayList<ArrayList<DesignObj>> listOfdObjList;
+    static ArrayList<ArrayList<MapObj>> listOfdObjList;
 
     @BeforeClass
     public static void setUpClass() throws Exception {
@@ -49,19 +49,19 @@ public class FileManagerTest {
 
         ///////////////////////////////////////////////////////////////////////
         // zero dObjList: 1 DesignBox
-        ArrayList<DesignObj> dObjList0 = objectList0();
+        ArrayList<MapObj> dObjList0 = objectList0();
         listOfdObjList.add(dObjList0);
 
         ///////////////////////////////////////////////////////////////////////
         // fifth dObjList: default package, default class
-        ArrayList<DesignObj> dObjList5 = new ArrayList<>();
+        ArrayList<MapObj> dObjList5 = new ArrayList<>();
         DataManager.setdObjList(dObjList5);
 
         listOfdObjList.add(dObjList5);
     }
 
-    private static ArrayList<DesignObj> objectList0() {
-        ArrayList<DesignObj> dObjList0 = new ArrayList<>();
+    private static ArrayList<MapObj> objectList0() {
+        ArrayList<MapObj> dObjList0 = new ArrayList<>();
         DataManager.setdObjList(dObjList0);
 
         return dObjList0;
